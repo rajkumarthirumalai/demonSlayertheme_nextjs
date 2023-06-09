@@ -1,6 +1,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import Hero from "public/d2.png";
+import Button from "@/components/button/Button";
 
 export default function Home() {
   return (
@@ -13,7 +14,7 @@ export default function Home() {
           sets out to become a demon slayer to avenge his family and cure his
           sister.
         </p>
-        <button className={styles.button}>See More</button>
+        <Button url="portfolio" text="Click To View More"/>
       </div>
       <div className={styles.item}>
         <Image src={Hero} alt="" className={styles.img}>
