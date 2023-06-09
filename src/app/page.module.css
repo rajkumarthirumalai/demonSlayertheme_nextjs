@@ -13,6 +13,15 @@
   width: 100%;
   height: 500px;
   object-fit: contain;
+  animation: move 2s infinite ease alternate;
+}
+@keyframes move {
+  from {
+    transform: translateY(-20px);
+  }
+  to {
+    transform: translateY(0px) scale(1.03);
+  }
 }
 .title{
   font-size: 72px;
