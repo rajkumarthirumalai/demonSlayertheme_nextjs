@@ -4,7 +4,8 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 
 async function getData(id) {
-  const res = await fetch(`http://localhost:3000/api/posts/${id}`, {
+  // const res = await fetch(`http://localhost:3000/api/posts/${id}`, {
+  const res = await fetch(`https://effervescent-moxie-7622fa.netlify.app/functions/get_posts/${id}`, {
     cache: "no-store",
   });
 

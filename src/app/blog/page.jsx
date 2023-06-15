@@ -7,12 +7,14 @@ export const metadata = {
   description: "This is Blog Page",
 };
 async function getData() {
-  const res = await fetch("http://localhost:3000/api/posts", {
+  // const res = await fetch("http://localhost:3000/api/posts", {
+    const res = await fetch("https://effervescent-moxie-7622fa.netlify.app/functions/get_posts", {
     cache: "no-store",
   });
 
   if (!res.ok) {
     throw new Error("Failed to fetch data");
+    
   }
 
   return res.json();
