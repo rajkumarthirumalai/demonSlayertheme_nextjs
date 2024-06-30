@@ -1,68 +1,42 @@
-import React from "react";
-import styles from "./page.module.css";
-import Image from "next/image";
-import { notFound } from "next/navigation";
+import Image from 'next/image';
 
-async function getData(id) {
-  // const res = await fetch(`http://localhost:3000/api/posts/${id}`, {
-  const res = await fetch(`https://effervescent-moxie-7622fa.netlify.app/functions/get_posts/${id}`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    return notFound()
-  }
-
-  return res.json();
+async function getCharacterById(id) {
+  const res = await fetch(`https://demon-slayer-api.onrender.com/v1/${id}`, { cache: 'no-store' });
+  if (!res.ok) throw new Error('Failed to fetch character');
+  const data = await res.json();
+  return data[0]; // The API returns an array with a single object
 }
 
-
 export async function generateMetadata({ params }) {
-
-  const post = await getData(params.id)
+  const character = await getCharacterById(params.id);
   return {
-    title: post.title,
-    description: post.desc,
+    title: `${character.name} | Demon Slayer`,
+    description: `Details about ${character.name} from Demon Slayer`,
   };
 }
 
-const BlogPost = async ({ params }) => {
-  const data = await getData(params.id);
+export default async function CharacterPage({ params }) {
+  const character = await getCharacterById(params.id);
+
   return (
-    <div className={styles.container}>
-      <div className={styles.top}>
-        <div className={styles.info}>
-          <h1 className={styles.title}>{data.title}</h1>
-          <p className={styles.desc}>
-            {data.desc}
-          </p>
-          <div className={styles.author}>
-            <Image
-              src={data.img}
-              alt=""
-              width={40}
-              height={40}
-              className={styles.avatar}
-            />
-            <span className={styles.username}>{data.username}</span>
-          </div>
-        </div>
-        <div className={styles.imageContainer}>
+    <div className="container mx-auto px-4 py-8">
+      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="relative h-64 w-full">
           <Image
-            src={data.img}
-            alt=""
-            fill={true}
-            className={styles.image}
+            src={character.image || '/placeholder.jpg'}
+            alt={character.name}
+            fill
+            style={{ objectFit: 'cover' }}
           />
         </div>
-      </div>
-      <div className={styles.content}>
-        <p className={styles.text}>
-         {data.content}
-        </p>
+        <div className="p-6">
+          <h1 className="text-3xl font-bold mb-4">{character.name}</h1>
+          <p className="text-xl mb-2">Race: {character.race}</p>
+          <p className="text-xl mb-2">Affiliation: {character.affiliation}</p>
+          <p className="text-xl mb-2">Skill: {character.skill}</p>
+          <p className="text-xl italic mt-4">"{character.quote}"</p>
+        </div>
       </div>
     </div>
   );
-};
-
-export default BlogPost;
+}

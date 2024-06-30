@@ -1,48 +1,20 @@
-import React from "react";
-import styles from "./page.module.css";
-import Link from "next/link";
-import Image from "next/image";
+import dynamic from 'next/dynamic';
+
+const CharacterList = dynamic(() => import('@/components/CharacterList'), {
+  loading: () => <p>Loading...</p>,
+  ssr: false
+});
+
 export const metadata = {
-  title: "Blog | demon slayer",
-  description: "This is Blog Page",
+  title: 'Demon Slayer Characters',
+  description: 'List of Demon Slayer characters',
 };
-async function getData() {
-  // const res = await fetch("http://localhost:3000/api/posts", {
-    const res = await fetch("https://effervescent-moxie-7622fa.netlify.app/functions/get_posts", {
-    cache: "no-store",
-  });
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-    
-  }
-
-  return res.json();
-}
-
-const Blog = async () => {
-  const data = await getData();
+export default function CharactersPage() {
   return (
-    <div className={styles.mainContainer}>
-      {data.map((item) => (
-        <Link href={`/blog/${item._id}`} className={styles.container} key={item.id}>
-          <div className={styles.imageContainer}>
-            <Image
-              src={item.img}
-              alt=""
-              width={400}
-              height={250}
-              className={styles.image}
-            />
-          </div>
-          <div className={styles.content}>
-            <h1 className={styles.title}>{item.title}</h1>
-            <p className={styles.desc}>{item.desc}</p>
-          </div>
-        </Link>
-      ))}
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">Demon Slayer Characters</h1>
+      <CharacterList />
     </div>
   );
-};
-
-export default Blog;
+}
